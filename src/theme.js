@@ -20,6 +20,48 @@ const theme = extendTheme({
         secondary: orange
       }
     }
+  },
+  components: { // Custom lại các component của MUI
+    // Name of the component
+    MuiButton: { // Custom lại các button ở đây mình đang custom lại nút Create
+      styleOverrides: {
+        // Name of the slot
+        root: { // root đại diện cho phần tử gốc của component
+          // Some CSS
+          textTransform: 'none' // Làm cho MUI không tự động chuyển đổi text sang uppercase
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: { // Custom lại label của input
+        // Name of the slot
+        root: ({ theme }) => ({ // Custom lại màu và cỡ chữ
+          color: theme.palette.primary.main,
+          fontSize: '0.875rem'
+        })
+      }
+    },
+    MuiOutlinedInput: { // Custom lại MuiOutlinedInput
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main, // Màu chữ
+          fontSize: '0.875rem', // Cỡ chữ
+          '.MuiOutlinedInput-notchedOutline': { // Custom lại viền của input
+            borderColor: theme.palette.primary.light
+          },
+          '&: hover .MuiOutlinedInput-notchedOutline': { // Custom lại viền khi hover
+            borderColor: theme.palette.primary.main
+          },
+          // '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          //   borderWidth: '1px' // Set this to the desired border thickness when the input is focused
+          // }
+          '& fieldset': { // Custom lại viền khi input được focus
+            borderWidth: '1px !important'
+          }
+        })
+      }
+    }
+
   }
   // ...other properties
 })
