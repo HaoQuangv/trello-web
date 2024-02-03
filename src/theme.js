@@ -32,6 +32,23 @@ const theme = extendTheme({
         }
       }
     },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          '*::-webkit-scrollbar': {
+            width: '8px',
+            height: '8px'
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: '#bdc3c7',
+            borderRadius: '8px'
+          },
+          '*::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#00b894' // corrected color value
+          }
+        }
+      }
+    },
     MuiInputLabel: {
       styleOverrides: { // Custom lại label của input
         // Name of the slot
@@ -55,7 +72,7 @@ const theme = extendTheme({
           // '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
           //   borderWidth: '1px' // Set this to the desired border thickness when the input is focused
           // }
-          '& fieldset': { // Custom lại viền khi input được focus
+          '& fieldset': {
             borderWidth: '1px !important'
           }
         })
