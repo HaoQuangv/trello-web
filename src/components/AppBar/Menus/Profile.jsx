@@ -31,7 +31,7 @@ function Profile() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <Avatar sx={{ width: 28, height: 28 }}
+          <Avatar sx={{ width: 34, height: 34 }}
             src='https://arthouseshop.net/uploads/source/vatphamtrangtri/ongtietkiem/kurumi4.jpg'
             alt='avatar'
           />

@@ -1,15 +1,178 @@
 import Box from '@mui/system/Box'
+import Chip from '@mui/material/Chip'
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
+import VpnLockIcon from '@mui/icons-material/VpnLock'
+import AddToDriveIcon from '@mui/icons-material/AddToDrive'
+import BoltIcon from '@mui/icons-material/Bolt'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import Avatar from '@mui/material/Avatar'
+import AvatarGroup from '@mui/material/AvatarGroup'
+import Tooltip from '@mui/material/Tooltip'
+import Button from '@mui/material/Button'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
+const MENU_STYLES = {
+  color: 'primary.main',
+  bgcolor: 'white',
+  border: 'none',
+  paddingX: '5px',
+  borderRadius: '4px',
+  '& .MuiSvgIcon-root': {
+    color: 'primary.main'
+  },
+  '&:hover': {
+    bgcolor: 'primary.50'
+  }
+}
 function BoardBar() {
   return (
     <Box sx={{
-      backgroundColor: 'primary.dark',
+      backgroundColor: 'white',
       width: '100%',
       height: (theme) => theme.trello.boardBarHeight,
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 2,
+      overflowX: 'auto',
+      borderTop: '1px solid #00bfa5',
+      paddingX: 2
     }}>
-      Board bar
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2
+      }}>
+        <Chip
+          icon={<SpaceDashboardIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+          label="BuiHaoQuang MERN Stack Board"
+          clickable
+          //onClick={() => {}} Tương tự như clickable
+          sx={MENU_STYLES}
+        />
+
+        <Chip
+          icon={<VpnLockIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+          label="Public/Private Workspace"
+          clickable
+          //onClick={() => {}} Tương tự như clickable
+          sx={MENU_STYLES}
+        />
+
+        <Chip
+          icon={<AddToDriveIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+          label="Add To Google Drive"
+          clickable
+          //onClick={() => {}} Tương tự như clickable
+          sx={MENU_STYLES}
+        />
+
+        <Chip
+          icon={<BoltIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+          label="Automation"
+          clickable
+          //onClick={() => {}} Tương tự như clickable
+          sx={MENU_STYLES}
+        />
+
+        <Chip
+          icon={<FilterListIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+          label="Filter"
+          clickable
+          //onClick={() => {}} Tương tự như clickable
+          sx={MENU_STYLES}
+        />
+      </Box>
+
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2
+      }}>
+        <Button variant="outlined" startIcon={ <PersonAddIcon />}>Create</Button>
+        <AvatarGroup max={7}
+          sx={{
+            '& .MuiAvatar-root': {
+              width: '34px',
+              height: '34px',
+              fontSize: '16px'
+            }
+          }}>
+          <Tooltip title='buihaoquang'>
+            <Avatar
+              alt="buihaoquang"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Golden_tabby_and_white_kitten_n01.jpg/1200px-Golden_tabby_and_white_kitten_n01.jpg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+
+          <Tooltip title='buihaoquang'>
+            <Avatar alt="Remy Sharp"
+              src="https://vnp.1cdn.vn/2023/01/19/anh-meo-6(1).jpeg"
+            />
+          </Tooltip>
+        </AvatarGroup>
+      </Box>
+
     </Box>
   )
 }
