@@ -10,6 +10,7 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatter'
 
 const MENU_STYLES = {
   color: 'white',
@@ -24,7 +25,7 @@ const MENU_STYLES = {
     bgcolor: 'primary.50'
   }
 }
-function BoardBar() {
+function BoardBar({ board }) {
   return (
     <Box sx={{
       backgroundColor: 'white',
@@ -49,7 +50,7 @@ function BoardBar() {
       }}>
         <Chip
           icon={<SpaceDashboardIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
-          label="BuiHaoQuang MERN Stack Board"
+          label={board?.title}
           clickable
           //onClick={() => {}} Tương tự như clickable
           sx={MENU_STYLES}
@@ -57,7 +58,7 @@ function BoardBar() {
 
         <Chip
           icon={<VpnLockIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
           //onClick={() => {}} Tương tự như clickable
           sx={MENU_STYLES}
