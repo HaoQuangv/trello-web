@@ -18,8 +18,26 @@ import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
 import { mapOrder } from '~/utils/sorts'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 function Column({ column }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({ id: column._id, data: { ...column } })
+
+  const dndKitColumnStyle = {
+    //touchAction: 'none', // Danh-cho- sensor default dang Pointersensor
+    // Néu sû dung css. Transform nhu docs se löi kieu stretch
+    //https://github.com/clauderic/dnd-kit/issues/117
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -31,15 +49,21 @@ function Column({ column }) {
   const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
 
   return (
-    <Box sx={{
-      maxWidth: '300px',
-      minWidth: '300px',
-      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' :'#ebecf0'),
-      borderRadius: '6px',
-      ml: 2,
-      height: 'fit-content',
-      maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
-    }}>
+    <Box
+      ref={setNodeRef}
+      style={dndKitColumnStyle}
+      {...attributes}
+      {...listeners}
+      sx={{
+        maxWidth: '300px',
+        minWidth: '300px',
+        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' :'#ebecf0'),
+        borderRadius: '6px',
+        ml: 2,
+        height: 'fit-content',
+        maxHeight: (theme) => `calc(${theme.trello.boardContentHeight} - ${theme.spacing(5)})`
+      }}
+    >
       {/*Column header*/}
       <Box
         sx={{
