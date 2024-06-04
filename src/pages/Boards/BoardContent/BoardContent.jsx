@@ -3,7 +3,7 @@ import ListColumns from './ListColumns/ListColumns'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import { mapOrder } from '~/utils/sorts'
-import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects } from '@dnd-kit/core'
+import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
 import { useState, useEffect } from 'react'
 import { cloneDeep } from 'lodash'
 
@@ -151,7 +151,11 @@ function BoardContent({ board }) {
 
   return (
     <DndContext
+      // Cam bien (da giai thich ky o video so 38)
       sensors={sensors}
+      // Thuat toan phat hien va cham(Neu khong co no thi card voi cover lon se khong keo qua column khac duoc
+      // vi no se bi conflict giua card va column, chung ta se dung closestCorners thay vi closestCenter)
+      collisionDetection={closestCorners}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
