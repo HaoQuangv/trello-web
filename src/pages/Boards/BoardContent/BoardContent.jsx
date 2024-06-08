@@ -10,10 +10,10 @@ import { DndContext,
   useSensors,
   DragOverlay,
   defaultDropAnimationSideEffects,
-  closestCenter,
+  //closestCenter,
   closestCorners,
   pointerWithin,
-  rectIntersection,
+  //rectIntersection,
   getFirstCollision
 } from '@dnd-kit/core'
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -280,20 +280,27 @@ function BoardContent({ board }) {
     // Tim cac diem giao nhau, va cham - intersections voi con tro
     const pointerIntersections = pointerWithin(args)
     //console.log('pointerIntersections: ', pointerIntersections)
-    // Thuat toan phat hien va cham se tra ve mot mang cac va cham o day
-    const intersections = !!pointerIntersections?.length
-      ? pointerIntersections
-      : rectIntersection(args)
-    console.log('intersections: ', intersections)
+
+    // Video 37.1: Neu pointerIntersections la mäng röng, return luôn không lam gi hêt.
+    // Fix triêt de cai bug flickering cua thu vien Dnd-kit trong truöng hop sau:
+    //- Kéo môt cai card có image cover lon va kéo lên phia trên cung ra khöi khu vuc kéo tha
+    if (!pointerIntersections?.length) return
+
+    // Thuat toan phat hien va cham se tra ve mot mang cac va cham o day (Khong can buoc nay nua - video 37.1)
+    // const intersections = !!pointerIntersections?.length
+    //   ? pointerIntersections
+    //   : rectIntersection(args)
+
     // Tim overId cua dam intersections o tren
-    let overId = getFirstCollision(intersections, 'id')
+    let overId = getFirstCollision(pointerIntersections, 'id')
     if (overId) {
       // Video 37: Doan nay dê fix cai vu flickering nhe.
-      // Neu cai over nó là column thi sê tim tói cái cardId gan nhat bên trong khu vuc va cham dó dua vao thuât toán phát hiên va cham closestCenter hoäc closestCorners deu duoc. Tuy nhiên o day dung closestCenter minh thay muot ma hon.
+      // Neu cai over nó là column thi sê tim tói cái cardId gan nhat bên trong khu vuc va cham dó dua vao thuât toán phát hiên va cham closestCenter hoäc closestCorners deu duoc. Tuy nhiên o day dung closestCornors minh thay muot ma hon.
+      // Neu không có doan checkColumn nay thi bug flickering vän fix dc röi nhung ma kéo tha se rat giât giat lag.
       const checkColumn = orderedColumns.find(column => column._id === overId)
       if (checkColumn) {
         //console.log('overId before: ', overId)
-        overId = closestCenter({
+        overId = closestCorners({
           ...args,
           droppableContainers: args.droppableContainers.filter(container => {
             return (container.id !== overId) && (checkColumn.cardOrderIds.includes(container.id))
@@ -306,7 +313,7 @@ function BoardContent({ board }) {
       return [{ id: overId }]
     }
 
-    // Neu ocerId la null thi tra ve mang rong de tranh crash trang web
+    // Neu oderId la null thi tra ve mang rong de tranh crash trang web
     return lastOverId.current ? [{ id: lastOverId.current }] : []
   }, [activeDragItemType, orderedColumns])
   return (
