@@ -3,8 +3,20 @@ import ListColumns from './ListColumns/ListColumns'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import { mapOrder } from '~/utils/sorts'
-import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
-import { useState, useEffect } from 'react'
+import { DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+  defaultDropAnimationSideEffects,
+  closestCenter,
+  closestCorners,
+  pointerWithin,
+  rectIntersection,
+  getFirstCollision
+} from '@dnd-kit/core'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { cloneDeep } from 'lodash'
 
 import { arrayMove } from '@dnd-kit/sortable'
@@ -34,6 +46,9 @@ function BoardContent({ board }) {
   const [activeDragItemType, setActiveDragItemType] = useState(null)
   const [activeDragItemData, setActiveDragItemData] = useState(null)
   const [oldColumnWhenDragginCard, setOldColumnWhenDragginCard] = useState(null)
+
+  // Diem va cham cuoi cung truoc do  (xu ly thuat toan phat hien va cham)
+  const lastOverId = useRef(null)
 
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
@@ -253,13 +268,58 @@ function BoardContent({ board }) {
   // Animation khi thả (Drop) phần tử - Test bằng cách kéo xong thả trực tiếp và nhìn phần giữ chỗ overplay (video 32)
   const customDropAnimation = { sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } }) }
 
+  // Chung ta se custom lai chien luoc / thuat toan phat hien va cham toi uu cho viec keo tha card giua nhieu columns (video 37 fixbug)
+  // args = arguments = cac doi so, tham so
+  const collisionDetectionStrategy = useCallback((args) => {
+    // Truong hop keo column thi dung thuat toan closestCorners la chuan nhat
+    //console.log('args: ', args)
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      return closestCorners({ ...args })
+    }
+
+    // Tim cac diem giao nhau, va cham - intersections voi con tro
+    const pointerIntersections = pointerWithin(args)
+    //console.log('pointerIntersections: ', pointerIntersections)
+    // Thuat toan phat hien va cham se tra ve mot mang cac va cham o day
+    const intersections = !!pointerIntersections?.length
+      ? pointerIntersections
+      : rectIntersection(args)
+    console.log('intersections: ', intersections)
+    // Tim overId cua dam intersections o tren
+    let overId = getFirstCollision(intersections, 'id')
+    if (overId) {
+      // Video 37: Doan nay dê fix cai vu flickering nhe.
+      // Neu cai over nó là column thi sê tim tói cái cardId gan nhat bên trong khu vuc va cham dó dua vao thuât toán phát hiên va cham closestCenter hoäc closestCorners deu duoc. Tuy nhiên o day dung closestCenter minh thay muot ma hon.
+      const checkColumn = orderedColumns.find(column => column._id === overId)
+      if (checkColumn) {
+        //console.log('overId before: ', overId)
+        overId = closestCenter({
+          ...args,
+          droppableContainers: args.droppableContainers.filter(container => {
+            return (container.id !== overId) && (checkColumn.cardOrderIds.includes(container.id))
+          })
+        })[0]?.id
+        //console.log('overId after: ', overId)
+      }
+
+      lastOverId.current = overId
+      return [{ id: overId }]
+    }
+
+    // Neu ocerId la null thi tra ve mang rong de tranh crash trang web
+    return lastOverId.current ? [{ id: lastOverId.current }] : []
+  }, [activeDragItemType, orderedColumns])
   return (
     <DndContext
       // Cam bien (da giai thich ky o video so 38)
       sensors={sensors}
       // Thuat toan phat hien va cham(Neu khong co no thi card voi cover lon se khong keo qua column khac duoc
       // vi no se bi conflict giua card va column, chung ta se dung closestCorners thay vi closestCenter)
-      collisionDetection={closestCorners}
+      // update video 37: nếu chỉ dùng closestCorners thi se co bug flickering + sai lech du lieu (vui long xem video 37 de ro)
+      //collisionDetection={closestCorners}
+
+      // Tu custom nang cao thuat toan phat hien va cham (video fixbug so 37)
+      collisionDetection={collisionDetectionStrategy}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
