@@ -17,7 +17,8 @@ import { DndContext,
   getFirstCollision
 } from '@dnd-kit/core'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatter'
 
 import { arrayMove } from '@dnd-kit/sortable'
 
@@ -91,6 +92,11 @@ function BoardContent({ board }) {
         // Xoa card o cai column active (cung co the hieu la column cu, cai luc ma keo card ra khoi no de sang column khac)
         nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDragingCardId)
 
+        // Them Placeholder Card neu column rong: Bi keo het card đi, khong con cai nao nua. (Video 37.2)
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)] 
+        }
+
         // Cap nhat lai mang cardOrderIds cho chuan du lieu
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
       }
@@ -105,11 +111,15 @@ function BoardContent({ board }) {
         }
         // Them card dang keo vao column overColumn
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(newIndex, 0, rebuild_activeDragingCardData)
+
+        // Xoa cai Placeholder Card di neu no dang ton tai (video 37.2)
+        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
+
         // Cap nhat lai mang cardOrderIds cho chuan du lieu
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
       }
 
-      //console.log('nextColumns: ', nextColumns)
+      console.log('nextColumns: ', nextColumns)
       return nextColumns
     })
   }
