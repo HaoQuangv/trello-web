@@ -94,7 +94,7 @@ function BoardContent({ board }) {
 
         // Them Placeholder Card neu column rong: Bi keo het card đi, khong con cai nao nua. (Video 37.2)
         if (isEmpty(nextActiveColumn.cards)) {
-          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)] 
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
         }
 
         // Cap nhat lai mang cardOrderIds cho chuan du lieu
@@ -119,7 +119,7 @@ function BoardContent({ board }) {
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
       }
 
-      console.log('nextColumns: ', nextColumns)
+      //console.log('nextColumns: ', nextColumns)
       return nextColumns
     })
   }
