@@ -48,13 +48,15 @@ function BoardBar({ board }) {
         alignItems: 'center',
         gap: 2
       }}>
-        <Chip
-          icon={<SpaceDashboardIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
-          label={board?.title}
-          clickable
-          //onClick={() => {}} Tương tự như clickable
-          sx={MENU_STYLES}
-        />
+        <Tooltip title={board?.description}>
+          <Chip
+            icon={<SpaceDashboardIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
+            label={board?.title}
+            clickable
+            //onClick={() => {}} Tương tự như clickable
+            sx={MENU_STYLES}
+          />
+        </Tooltip>
 
         <Chip
           icon={<VpnLockIcon /*color='primary.main' có thể dùng cách này để thay đổi màu của icon*//>}
